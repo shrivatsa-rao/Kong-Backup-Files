@@ -1,0 +1,58 @@
+_format_version: "3.0"
+consumers:
+- jwt_secrets:
+  - algorithm: HS256
+    key: fr
+    secret: CEDQJdXPSOGP3TYEzOs2S2IMp6xPZEbb
+  - algorithm: HS256
+    key: Mqj2j0MALYWKmS0XV8FPNqsDigSINF9P
+    secret: cJgDwWeGz2z7nkpFp09okOZzXl25hOqf
+  username: vendor
+plugins:
+- config:
+    anonymous: null
+    claims_to_verify:
+    - exp
+    cookie_names: []
+    header_names:
+    - authorization
+    key_claim_name: iss
+    maximum_expiration: 0
+    run_on_preflight: true
+    secret_is_base64: false
+    uri_param_names:
+    - jwt
+  enabled: true
+  name: jwt
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
+  route: demo-route
+  service: demo
+services:
+- connect_timeout: 60000
+  enabled: true
+  host: httpbin.org
+  name: demo
+  path: /anything
+  port: 80
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: demo-route
+    path_handling: v0
+    paths:
+    - /demo
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
